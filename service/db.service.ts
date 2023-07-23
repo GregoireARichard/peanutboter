@@ -20,8 +20,8 @@ export class db {
             const client = await pool.connect()
         
             const result = await client.query(query)
-            const users = result.rows
-            res = users[0]
+            const item = result.rows
+            res = item[0]
             client.release()
         
           } catch (err) {
