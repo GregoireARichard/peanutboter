@@ -1,4 +1,4 @@
 export interface IChooseOrder {
-    currentPrice: number,
-    boughtAtPrice: number
+    currency_to: string,
+    currency_from: string
 }
