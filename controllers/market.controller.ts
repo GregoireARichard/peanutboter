@@ -20,10 +20,12 @@ export class MarketController {
     const symbolTo = req.body.symbolTo;
     const symbolFrom = req.body.symbolFrom;
     const amount = req.body.amount;
+    const direction = req.body.direction
     const placeOrder: IPlaceOrder = {
       symbolTo: symbolTo,
       symbolFrom: symbolFrom,
       amount: amount,
+      direction: direction
     };
     const result = await MarketService.placeOrder(placeOrder);
     res.json(result);

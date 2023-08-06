@@ -1,5 +1,5 @@
 import { ICheckLoginRequest } from "../types/ICheckLogin";
-import { IPlaceOrder } from "../types/IPlaceOrder";
+import { IPlaceOrder, Direction } from "../types/IPlaceOrder";
 import { db } from "./db.service";
 import bcrypt from "bcrypt";
 import { MarketService } from "./market.service";
@@ -18,12 +18,14 @@ export class repository {
     return false;
   }
   public static async placeOrder(placeOrder: IPlaceOrder): Promise<boolean> {
+    const date = Date.now()
     const symbol = `${placeOrder.symbolTo}${placeOrder.symbolFrom}`;
+    const current_currency = placeOrder.direction == Direction.sell ? placeOrder.symbolFrom : placeOrder.symbolTo
     const exchangeRate = (await MarketService.getMarketData(symbol)).price;
     const queryInsert = `INSERT INTO transactions(currency_from, currency_to,
-            exchange_rate_at_purchase, account_id, amount)
+            exchange_rate_at_purchase, account_id, amount,current_currency, updated_at)
              VALUES('${placeOrder.symbolFrom}', '${placeOrder.symbolTo}',
-            '${exchangeRate}',1, ${placeOrder.amount});`;
+            '${exchangeRate}',1, ${placeOrder.amount},'${current_currency}', to_timestamp(${date} / 1000.0));`;
     console.log(queryInsert);
     try {
       db.query(queryInsert);

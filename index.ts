@@ -17,7 +17,7 @@ app.use(cors());
 const cronExpression = "*/15 * * * * *";
 
 const cronJob = new cron.CronJob(cronExpression, Job.placeOrder);
-cronJob.start();
+//cronJob.start();
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
