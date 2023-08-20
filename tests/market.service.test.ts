@@ -3,17 +3,6 @@ import { IKlines, klinesResult } from "../types/IKlines";
 import { apiCall } from "../apiCalls/apicall";
 
 jest.mock('../apiCalls/apicall');
-// describe('is curve falling function', () => {
-//   it('checks if whether a curve is falling', async()  => {
-//     const klinesParams: IKlines = {
-//         symbol : "ETHUSDT",
-//         interval : "1d",
-//         limit : "5"
-//     }
-//     const result = await MarketService.isCurveFalling(klinesParams);
-//     expect(result).toBe(true);
-//   });
-// }); 
 const klinesParams: IKlines = {
   symbol: "ETHUSDT",
   interval: "1d",
