@@ -77,7 +77,6 @@ export class MarketService {
     const min = Math.min(averageArr[0], averageArr[averageArr.length - 1]);
     const max = Math.max(averageArr[0], averageArr[averageArr.length - 1]);
 
-    console.log(max, min, max * 0.05, max - min)
     if (max - min > max * 0.05) {
       return true;
     }
