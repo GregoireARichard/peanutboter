@@ -62,7 +62,7 @@ export class MarketService {
   }
 
   public static async isCurveFalling(klinesParams: IKlines): Promise<Boolean> {
-    const data = await apiCall.klines(klinesParams); // external call
+    const data = await apiCall.klines(klinesParams); 
     const parsedArr = helpers.parseKlines(data);
     let averageArr: number[] = [];
 
