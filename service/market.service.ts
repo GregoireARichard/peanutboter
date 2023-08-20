@@ -4,6 +4,9 @@ import { IPlaceOrder } from "../types/IPlaceOrder";
 import { repository } from "./repository.service";
 import { IChooseOrder } from "../types/IChooseOrder";
 import { db } from "./db.service";
+import { IKlines, klinesResult } from "../types/IKlines";
+import { apiCall } from "../apiCalls/apicall";
+import { helpers } from "./helpers/helper";
 
 export const MIN_YIELD = 1.03;
 
@@ -55,6 +58,30 @@ export class MarketService {
     } catch (error) {
       console.log("chooseOrder:", error);
     }
+    return false;
+  }
+
+  public static async isCurveFalling(klinesParams: IKlines): Promise<Boolean> {
+    const data = await apiCall.klines(klinesParams); // external call
+    const parsedArr = helpers.parseKlines(data);
+    let averageArr: number[] = [];
+
+    parsedArr.map((e: number[]) => {
+      let average: number = 0;
+      e.map((item) => {
+        average += item;
+      });
+      average /= e.length;
+      averageArr.push(average);
+    });
+    const min = Math.min(averageArr[0], averageArr[averageArr.length - 1]);
+    const max = Math.max(averageArr[0], averageArr[averageArr.length - 1]);
+
+    console.log(max, min, max * 0.05, max - min)
+    if (max - min > max * 0.05) {
+      return true;
+    }
+
     return false;
   }
 }
