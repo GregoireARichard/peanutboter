@@ -6,16 +6,16 @@ import { MarketService } from "./market.service";
 
 export class repository {
   public static async checkLogin(login: ICheckLoginRequest): Promise<boolean> {
-    const query = "SELECT email, password FROM admin limit 1";
-    const adminDetails = await db.query(query);
-    const email = adminDetails.email;
-    const password = adminDetails.password;
-    const validPassword = await bcrypt.compare(login.password, password);
+    // const query = "SELECT email, password FROM admin limit 1";
+    // const adminDetails = await db.query(query);
+    // const email = adminDetails.email;
+    // const password = adminDetails.password;
+    // const validPassword = await bcrypt.compare(login.password, password);
 
-    if (login.email == email && validPassword) {
-      return true;
-    }
-    return false;
+    // if (login.email == email && validPassword) {
+    //   return true;
+    // }
+     return false;
   }
   public static async placeOrder(placeOrder: IPlaceOrder): Promise<boolean> {
     const date = Date.now()

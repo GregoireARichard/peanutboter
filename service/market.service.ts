@@ -4,7 +4,7 @@ import { IPlaceOrder } from "../types/IPlaceOrder";
 import { repository } from "./repository.service";
 import { IChooseOrder } from "../types/IChooseOrder";
 import { db } from "./db.service";
-import { IKlines, klinesResult } from "../types/IKlines";
+import { IKlines } from "../types/IKlines";
 import { apiCall } from "../apiCalls/apicall";
 import { helpers } from "./helpers/helper";
 
@@ -14,24 +14,8 @@ export class MarketService {
   public static async getMarketData(
     symbol: string,
   ): Promise<IGetMarketDataResponse> {
-    let marketData: IGetMarketDataResponse = {
-      symbol: symbol,
-      price: "",
-    };
-    try {
-      const apiKey = process.env.API_KEY;
-      const endpoint = `https://api.binance.com/api/v3/ticker/price`;
-
-      const response = await axios.get(endpoint, {
-        params: { symbol },
-        headers: { "X-MBX-APIKEY": apiKey },
-      });
-
-      marketData = response.data;
-    } catch (error) {
-      console.error("getMarketData:", error);
-    }
-    return marketData;
+    return await apiCall.getPrices(symbol)
+   
   }
   public static async placeOrder(placeOrder: IPlaceOrder): Promise<boolean> {
     if (await repository.placeOrder(placeOrder)) return true;
@@ -61,7 +45,7 @@ export class MarketService {
     return false;
   }
 
-  public static async isCurveFalling(klinesParams: IKlines): Promise<Boolean> {
+  public static async isCurveFalling(klinesParams: IKlines): Promise<boolean> {
     const data = await apiCall.klines(klinesParams); 
     const parsedArr = helpers.parseKlines(data);
     let averageArr: number[] = [];

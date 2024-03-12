@@ -1,5 +1,5 @@
-import { helpers } from "../service/helpers/helper";
-import { klinesResult } from "../types/IKlines";
+import { helpers } from "../../service/helpers/helper";
+import { klinesResult } from "../../types/IKlines";
 
 describe("should return a parsed klines array of number", () => {
   it("parses the kline", () => {
@@ -55,7 +55,6 @@ describe("should return a parsed klines array of number", () => {
         expect(e.every(item => typeof item === "number")).toBe(true);
         expect(e.length).toBe(4)
     });
-    console.log(result)
 
   });
 });

@@ -10,7 +10,7 @@ export class MarketController {
     res: express.Response,
   ): Promise<void> {
     const symbol = typeof req.query.symbol === "string" ? req.query.symbol : "";
-    const result = await MarketService.getMarketData(symbol);
+    const result: IGetMarketDataResponse = await MarketService.getMarketData(symbol);
     res.json(result);
   }
   public static async placeOrder(
@@ -27,7 +27,7 @@ export class MarketController {
       amount: amount,
       direction: direction
     };
-    const result = await MarketService.placeOrder(placeOrder);
+    const result: boolean = await MarketService.placeOrder(placeOrder);
     res.json(result);
   }
   public static async orderChooser(
@@ -40,7 +40,7 @@ export class MarketController {
       currency_from: currency_from,
       currency_to: currency_to,
     };
-    const result = await MarketService.chooseOrder(chooseOrder);
+    const result: Boolean = await MarketService.chooseOrder(chooseOrder);
     res.json(result);
   }
 }

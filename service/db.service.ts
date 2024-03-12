@@ -15,7 +15,7 @@ export class db {
             password: 'root',
             port: 5432,
             //connectionString: connectionString,
-        });
+        })
         try {
             const client = await pool.connect()
         
