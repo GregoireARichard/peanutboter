@@ -1,6 +1,6 @@
 import axios from "axios";
-import { IKlines, klinesResult } from "../types/IKlines";
-import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse";
+import { IKlines, klinesResult } from "../types/IKlines.type";
+import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse.type";
 
 export class apiCall {
   public static async klines(klinesParams: IKlines): Promise<klinesResult[]> {
@@ -41,5 +41,17 @@ export class apiCall {
       console.error("getMarketData:", error);
     }
     return res;
+  }
+
+  public static async getTipRanksAssets(){
+    const endpoint = "https://tr-cdn.tipranks.com/assets/prod/cryptocurrency/payload.json"
+    let data = []
+    try {
+      const response = await axios.get(endpoint);
+       data = response.data;
+    } catch (error) {
+      console.error("getMarketData:", error);
+    }
+    return data
   }
 }

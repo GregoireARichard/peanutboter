@@ -1,7 +1,7 @@
 import { db } from "../service/db.service";
 import { MarketService } from "../service/market.service";
 import cron from "cron";
-import { IKlines } from "../types/IKlines";
+import { IKlines } from "../types/IKlines.type";
 
 export class Job {
   public static async placeOrder() {

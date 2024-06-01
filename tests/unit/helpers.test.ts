@@ -1,5 +1,5 @@
 import { helpers } from "../../service/helpers/helper";
-import { klinesResult } from "../../types/IKlines";
+import { klinesResult } from "../../types/IKlines.type";
 
 describe("should return a parsed klines array of number", () => {
   it("parses the kline", () => {

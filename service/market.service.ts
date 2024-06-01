@@ -1,12 +1,12 @@
-import axios from "axios";
-import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse";
-import { IPlaceOrder } from "../types/IPlaceOrder";
+import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse.type";
+import { IPlaceOrder } from "../types/IPlaceOrder.type.";
 import { repository } from "./repository.service";
-import { IChooseOrder } from "../types/IChooseOrder";
+import { IChooseOrder } from "../types/IChooseOrder.type";
 import { db } from "./db.service";
-import { IKlines } from "../types/IKlines";
+import { IKlines } from "../types/IKlines.type";
 import { apiCall } from "../apiCalls/apicall";
 import { helpers } from "./helpers/helper";
+import { IGetCryptoDataresult } from "../types/IGetCryptoData.typeResult";
 
 export const MIN_YIELD = 1.03;
 
@@ -14,12 +14,10 @@ export class MarketService {
   public static async getMarketData(
     symbol: string,
   ): Promise<IGetMarketDataResponse> {
-    return await apiCall.getPrices(symbol)
-   
+    return await apiCall.getPrices(symbol);
   }
   public static async placeOrder(placeOrder: IPlaceOrder): Promise<boolean> {
-    if (await repository.placeOrder(placeOrder)) return true;
-    return false;
+    return await repository.placeOrder(placeOrder);
   }
   public static async chooseOrder(chooseOrder: IChooseOrder): Promise<Boolean> {
     const symbol = `${chooseOrder.currency_to}${chooseOrder.currency_from}`;
@@ -46,7 +44,7 @@ export class MarketService {
   }
 
   public static async isCurveFalling(klinesParams: IKlines): Promise<boolean> {
-    const data = await apiCall.klines(klinesParams); 
+    const data = await apiCall.klines(klinesParams);
     const parsedArr = helpers.parseKlines(data);
     let averageArr: number[] = [];
 
@@ -66,5 +64,56 @@ export class MarketService {
     }
 
     return false;
+  }
+
+  public static async getCryptosList() {
+    interface coinComperator {
+      name: string;
+      marketCap: number;
+    }
+    const data = await apiCall.getTipRanksAssets();
+    const coinsData = data.CryptoFolder.data.cryptosList.coins;
+    const coinsNames: coinComperator[] = [];
+
+    coinsData.map((coin: { name: string; marketCap: number }) => {
+      const name = coin.name;
+      const marketCap = coin.marketCap;
+      if (coin.name != "Tether" && coin.name != "Toncoin"){
+        coinsNames.push({ name: name, marketCap: marketCap });
+      }
+     
+    });
+    coinsNames.sort((a, b) => b.marketCap - a.marketCap);
+
+    const top20CoinNames: string[] = coinsNames
+      .slice(0, 20)
+      .map((coin) => coin.name);
+    return top20CoinNames;
+  }
+
+  public static async getCryptoData(
+    cryptoTipRanksId: string,
+    klinesParams: IKlines,
+  ) {
+    const data = await apiCall.getTipRanksAssets();
+    const coinsData = data.CryptoFolder.data.cryptosList.coins;
+
+    let result: Partial<IGetCryptoDataresult> = {};
+
+    coinsData.map((coin: { name: string }) => {
+      if (coin.name === cryptoTipRanksId) {
+        result = coin;
+      }
+    });
+
+    klinesParams.symbol = result.ticker
+      ? `${result.ticker.replace("-", "")}T`
+      : "BTCUSDT";
+
+    const resultKlines = await apiCall.klines(klinesParams);
+    result.ticker = klinesParams.symbol;
+    result.prices = resultKlines;
+
+    return result;
   }
 }

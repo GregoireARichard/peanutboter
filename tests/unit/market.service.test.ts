@@ -1,5 +1,5 @@
 import { MarketService } from "../../service/market.service";
-import { IKlines, klinesResult } from "../../types/IKlines";
+import { IKlines, klinesResult } from "../../types/IKlines.type";
 import { apiCall } from "../../apiCalls/apicall";
 import { mockKlinesResponseFalse, mockKlinesResponseTrue } from "./data/data";
 

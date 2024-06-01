@@ -1,8 +1,9 @@
 import express from "express";
 import { MarketService } from "../service/market.service";
-import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse";
-import { IPlaceOrder } from "../types/IPlaceOrder";
-import { IChooseOrder } from "../types/IChooseOrder";
+import { IGetMarketDataResponse } from "../types/IGetMarketDataResponse.type";
+import { IPlaceOrder } from "../types/IPlaceOrder.type.";
+import { IChooseOrder } from "../types/IChooseOrder.type";
+import { IKlines } from "../types/IKlines.type";
 
 export class MarketController {
   public static async getMarketData(
@@ -10,7 +11,9 @@ export class MarketController {
     res: express.Response,
   ): Promise<void> {
     const symbol = typeof req.query.symbol === "string" ? req.query.symbol : "";
-    const result: IGetMarketDataResponse = await MarketService.getMarketData(symbol);
+    const result: IGetMarketDataResponse = await MarketService.getMarketData(
+      symbol,
+    );
     res.json(result);
   }
   public static async placeOrder(
@@ -20,12 +23,13 @@ export class MarketController {
     const symbolTo = req.body.symbolTo;
     const symbolFrom = req.body.symbolFrom;
     const amount = req.body.amount;
-    const direction = req.body.direction
+    const direction = req.body.direction;
+
     const placeOrder: IPlaceOrder = {
       symbolTo: symbolTo,
       symbolFrom: symbolFrom,
       amount: amount,
-      direction: direction
+      direction: direction,
     };
     const result: boolean = await MarketService.placeOrder(placeOrder);
     res.json(result);
@@ -42,5 +46,30 @@ export class MarketController {
     };
     const result: Boolean = await MarketService.chooseOrder(chooseOrder);
     res.json(result);
+  }
+
+  public static async getCryptoList(
+    req: express.Request,
+    res: express.Response,
+  ): Promise<void> {
+    const results = await MarketService.getCryptosList();
+    res.json(results);
+  }
+
+  public static async getCryptoInfo(
+    req: express.Request,
+    res: express.Response,
+  ): Promise<void> {
+    const crypto = typeof req.query.crypto === "string" ? req.query.crypto : "";
+    const symbol = typeof req.query.symbol === "string" ? req.query.symbol : "";
+    const interval = typeof req.query.interval === "string" ? req.query.interval : "";
+    const limit = typeof req.query.limit === "number" ? req.query.limit : 10;
+    const klinesParams: IKlines = {
+      symbol: symbol ? symbol : "",
+      interval: interval,
+      limit: limit,
+    };
+    const results = await MarketService.getCryptoData(crypto, klinesParams);
+    res.send(results);
   }
 }

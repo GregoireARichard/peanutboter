@@ -1,13 +1,10 @@
 import { Pool } from "pg"
-import { ICheckLoginRequest } from "../types/ICheckLogin";
+import { ICheckLoginRequest } from "../types/ICheckLogin.type";
 
 export class db {
     public static async query(query:string): Promise<any>{
         //const connectionString = 'postgres://mainAdmin:' + encodeURIComponent('(!$u@3#5EfRMj9g^:G') + '@localhost:5432/peanutbot';
-        let res: ICheckLoginRequest = {
-          email: "",
-          password: ""
-        }
+        let res: any
         const pool = new Pool({
             user: 'mainAdmin',
             host: 'localhost',
@@ -21,7 +18,7 @@ export class db {
         
             const result = await client.query(query)
             const item = result.rows
-            res = item[0]
+            res = item
             client.release()
         
           } catch (err) {

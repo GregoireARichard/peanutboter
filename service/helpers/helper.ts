@@ -1,4 +1,4 @@
-import { klinesResult } from "../../types/IKlines";
+import { klinesResult } from "../../types/IKlines.type";
 
 export class helpers {
     public static parseKlines(resultKlines: klinesResult[]): number[][]{

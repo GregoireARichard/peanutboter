@@ -5,6 +5,7 @@ import cors from "cors";
 import { MarketController } from "./controllers/market.controller";
 import cron from "cron";
 import { Job } from "./jobs/job";
+import { AccountController } from "./controllers/account.controller";
 
 dotenv.config();
 
@@ -24,8 +25,13 @@ app.get("/", (req: Request, res: Response) => {
 });
 //admin
 app.post("/admin/login", AdminController.login);
+// app.post("/admin/signup", AdminController.signup);
 
+// front controls
+app.get("/controls/account-list", AccountController.getAccountList)
 //market
+app.get("/market/crypto-list", MarketController.getCryptoList)
+app.get("/market/crypto-info", MarketController.getCryptoInfo)
 app.post("/market/order", MarketController.placeOrder);
 app.get("/market/data", MarketController.getMarketData);
 app.post("/market/order-chooser", MarketController.orderChooser);
