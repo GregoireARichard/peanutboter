@@ -15,7 +15,7 @@ export class AdminService {
       const encoded = jwt.sign({
           email: email
       }, SIGNING ? SIGNING : '', {
-              expiresIn: '30 minutes',
+              expiresIn: '3 hours',
               audience: ADMIN_AUD,
               issuer: ISSUER
       })

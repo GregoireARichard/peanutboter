@@ -8,3 +8,9 @@ export interface IAccount {
     passive: string,
     updated_at: Date
 }
+
+export interface IFilterAccount {
+    id: number,
+    name: string,
+    currencies: string[]
+}

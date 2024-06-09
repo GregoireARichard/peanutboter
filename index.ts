@@ -29,6 +29,7 @@ app.post("/admin/login", AdminController.login);
 
 // front controls
 app.get("/controls/account-list", AccountController.getAccountList)
+app.post("/controls/currency", AccountController.addCurrencyToAccount)
 //market
 app.get("/market/crypto-list", MarketController.getCryptoList)
 app.get("/market/crypto-info", MarketController.getCryptoInfo)

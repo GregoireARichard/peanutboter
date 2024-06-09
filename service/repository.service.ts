@@ -10,26 +10,26 @@ export class repository {
   public static async checkLogin(login: ICheckLoginRequest): Promise<boolean> {
     const query = "SELECT email, password FROM admin limit 1";
     const adminDetails = await db.query(query);
-    const email = adminDetails.email;
-    const password = adminDetails.password;
+    const email = adminDetails[0].email;
+    const password = adminDetails[0].password;
     const validPassword = await bcrypt.compare(login.password, password);
 
-    if (login.email == email && validPassword) {
-      return true;
-    }
-     return false;
+    return login.email == email && validPassword;
   }
   public static async signup(user: any): Promise<void> {
-    const encryptedPassword = await utils.encryptPassword(user.password, 10)
+    const encryptedPassword = await utils.encryptPassword(user.password, 10);
     const query = `INSERT INTO admin (email, password) VALUES('${user.email}', '${encryptedPassword}')`;
     await db.query(query);
-    
-    return 
-}
+
+    return;
+  }
   public static async placeOrder(placeOrder: IPlaceOrder): Promise<boolean> {
-    const date = Date.now()
+    const date = Date.now();
     const symbol = `${placeOrder.symbolTo}${placeOrder.symbolFrom}`;
-    const current_currency = placeOrder.direction == Direction.sell ? placeOrder.symbolFrom : placeOrder.symbolTo
+    const current_currency =
+      placeOrder.direction == Direction.sell
+        ? placeOrder.symbolFrom
+        : placeOrder.symbolTo;
     const exchangeRate = (await MarketService.getMarketData(symbol)).price;
     const queryInsert = `INSERT INTO transactions(currency_from, currency_to,
             exchange_rate_at_purchase, account_id, amount,current_currency, updated_at)
@@ -44,7 +44,7 @@ export class repository {
       return false;
     }
   }
-  
+
   public static async getAccountList(): Promise<IAccount[]> {
     let res: IAccount[] = [];
     const query = `select * from accounts;`;
@@ -65,5 +65,21 @@ export class repository {
     }
     return res;
   }
-  
+
+  public static async addCurrencyToAccount(
+    accountID: number,
+    currencies: string[],
+  ) {
+    const query = `UPDATE accounts SET currencies = '${JSON.stringify(
+      currencies,
+    )}' WHERE id = ${accountID}`;
+    try {
+      const res = await db.query(query);
+      console.log(res);
+      return { message: "success" };
+    } catch (error) {
+      console.log(error);
+      return { message: "error" };
+    }
+  }
 }
