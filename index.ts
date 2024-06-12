@@ -14,11 +14,18 @@ const port = process.env.PORT;
 const appLink = process.env.APP_LINK ? process.env.APP_LINK : "main--toast-peanutbot.netlify.app"
 
 app.use(express.json());
-app.use(cors({
+// CORS Configuration
+const corsOptions = {
   origin: appLink,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204 // For legacy browser support
+};
+
+app.use(cors(corsOptions));
+
+// Handle Preflight Requests
+app.options('*', cors(corsOptions));
 
 const cronExpression = "*/15 * * * * *";
 
