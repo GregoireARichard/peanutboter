@@ -15,11 +15,9 @@ export class AdminController {
     }
     public static async signup(req: express.Request, res: express.Response): Promise<void>{
         const email = req.body.email 
-        const name = req.body.name
         const password = req.body.password
 
         const newUser  = {
-            name: name,
             email: email,
             password: password,
           };

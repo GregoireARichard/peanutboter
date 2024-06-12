@@ -13,7 +13,11 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.APP_LINK,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const cronExpression = "*/15 * * * * *";
 
@@ -37,5 +41,5 @@ app.post("/market/order", MarketController.placeOrder);
 app.get("/market/data", MarketController.getMarketData);
 app.post("/market/order-chooser", MarketController.orderChooser);
 app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  console.log(`⚡️[server]: Server is running on port:${port}`);
 });
