@@ -20,7 +20,7 @@ app.use(cors({
 }));
 
 const cronExpression = "*/15 * * * * *";
-
+const appLink = process.env.APP_LINK ? process.env.APP_LINK : "main--toast-peanutbot.netlify.app"
 const cronJob = new cron.CronJob(cronExpression, Job.placeOrder);
 //cronJob.start();
 
@@ -28,7 +28,12 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 //admin
-app.post("/admin/login", AdminController.login);
+app.post("/admin/login", (req: Request, res: Response) => {
+  res.setHeader('Access-Control-Allow-Origin', appLink);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  AdminController.login(req, res);
+});
 // app.post("/admin/signup", AdminController.signup);
 
 // front controls
