@@ -4,10 +4,10 @@ export class db {
     public static async query(query:string): Promise<any>{
         let res: any
         const pool = new Pool({
-            user: 'mainAdmin',
+            user: process.env.POSTGRES_USER,
             host: 'localhost',
             database: 'peanutbot',
-            password: 'root',
+            password: process.env.POSTGRES_PASSWORD,
             port: 5432,
         })
         try {

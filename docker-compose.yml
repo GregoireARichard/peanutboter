@@ -6,7 +6,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: mainAdmin
+      POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: peanutbot
     volumes:
