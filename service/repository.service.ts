@@ -14,11 +14,14 @@ export class repository {
     let adminDetails: any;
     try {
       adminDetails = await db.query(query);
-      email = adminDetails[0].email;
-      password = adminDetails[0].password;
+      if (adminDetails.length > 0) {
+        email = adminDetails[0].email;
+        password = adminDetails[0].password;
+      }
       const validPassword = await bcrypt.compare(login.password, password);
 
       return login.email == email && validPassword;
+      
     } catch (error) {
       console.log(error);
     }
