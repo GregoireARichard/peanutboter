@@ -9,7 +9,7 @@ export class db {
             user: 'mainAdmin',
             host: 'localhost',
             database: 'peanutbot',
-            password: 'root',
+            password: process.env.POSTGRES_PASSWORD,
             port: 5432,
             //connectionString: connectionString,
         })
