@@ -8,13 +8,21 @@ import { IAccount } from "../types/IAccount.types";
 
 export class repository {
   public static async checkLogin(login: ICheckLoginRequest): Promise<boolean> {
-    const query = "SELECT email, password FROM admin limit 1";
-    const adminDetails = await db.query(query);
-    const email = adminDetails[0].email;
-    const password = adminDetails[0].password;
-    const validPassword = await bcrypt.compare(login.password, password);
+    const query = `SELECT email, password FROM admin WHERE email = '${login.email}'`;
+    let email = "";
+    let password = "";
+    let adminDetails: any;
+    try {
+      adminDetails = await db.query(query);
+      email = adminDetails[0].email;
+      password = adminDetails[0].password;
+      const validPassword = await bcrypt.compare(login.password, password);
 
-    return login.email == email && validPassword;
+      return login.email == email && validPassword;
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
   }
   public static async signup(user: any): Promise<void> {
     const encryptedPassword = await utils.encryptPassword(user.password, 10);
