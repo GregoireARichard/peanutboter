@@ -6,6 +6,8 @@ psql:
 	@DB_CONTAINER_ID=$$(docker ps -q -f name=$(DB_CONTAINER_NAME)) && \
 	docker exec -it $${DB_CONTAINER_ID} psql -U $(DB_USER) -d $(DB_NAME)
 
+start: 
+	npm start
 dev:
 	npm run dev
 build: 
