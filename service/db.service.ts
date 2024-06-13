@@ -7,7 +7,7 @@ export class db {
             user: 'mainAdmin',
             host: 'localhost',
             database: 'peanutbot',
-            password: process.env.POSTGRES_PASSWORD,
+            password: 'root',
             port: 5432,
         })
         try {
