@@ -36,9 +36,12 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 //admin
-app.post("/admin/login", AdminController.login);
+//app.post("/admin/login", AdminController.login);
 // app.post("/admin/signup", AdminController.signup);
-
+app.post("/admin/login", (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', appLink);
+  AdminController.login(req, res);
+});
 // front controls
 app.get("/controls/account-list", AccountController.getAccountList)
 app.post("/controls/currency", AccountController.addCurrencyToAccount)
