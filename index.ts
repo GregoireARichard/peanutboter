@@ -40,6 +40,9 @@ app.get("/", (req: Request, res: Response) => {
 // app.post("/admin/signup", AdminController.signup);
 app.post("/admin/login", (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', appLink);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   AdminController.login(req, res);
 });
 // front controls
