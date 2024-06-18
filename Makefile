@@ -8,6 +8,8 @@ psql:
 
 start: 
 	npm start
+prod: 
+	npm prod
 dev:
 	npm run dev
 build: 
