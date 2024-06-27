@@ -16,7 +16,7 @@ const appLink = process.env.APP_LINK ? process.env.APP_LINK : "main--toast-peanu
 app.use(express.json());
 // CORS Configuration
 const corsOptions = {
-  origin: appLink,
+  origin: [appLink, 'https://main--toast-peanutbot.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 204 // For legacy browser support
