@@ -10,15 +10,17 @@ import { AccountController } from "./controllers/account.controller";
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
-const appLink = process.env.APP_LINK ? process.env.APP_LINK : "main--toast-peanutbot.netlify.app"
+const port = process.env.PORT || 8000;
+const appLink = process.env.APP_LINK || "main--toast-peanutbot.netlify.app";
 
 app.use(express.json());
+
 // CORS Configuration
 const corsOptions = {
   origin: [appLink, 'https://main--toast-peanutbot.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Allow credentials
   optionsSuccessStatus: 204 // For legacy browser support
 };
 
@@ -35,9 +37,8 @@ const cronJob = new cron.CronJob(cronExpression, Job.placeOrder);
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
-//admin
-//app.post("/admin/login", AdminController.login);
-// app.post("/admin/signup", AdminController.signup);
+
+// Apply CORS headers to specific routes if needed
 app.post("/admin/login", (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', appLink);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -45,15 +46,18 @@ app.post("/admin/login", (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   AdminController.login(req, res);
 });
-// front controls
-app.get("/controls/account-list", AccountController.getAccountList)
-app.post("/controls/currency", AccountController.addCurrencyToAccount)
-//market
-app.get("/market/crypto-list", MarketController.getCryptoList)
-app.get("/market/crypto-info", MarketController.getCryptoInfo)
+
+// Front controls
+app.get("/controls/account-list", AccountController.getAccountList);
+app.post("/controls/currency", AccountController.addCurrencyToAccount);
+
+// Market
+app.get("/market/crypto-list", MarketController.getCryptoList);
+app.get("/market/crypto-info", MarketController.getCryptoInfo);
 app.post("/market/order", MarketController.placeOrder);
 app.get("/market/data", MarketController.getMarketData);
 app.post("/market/order-chooser", MarketController.orderChooser);
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running on port:${port}`);
 });
