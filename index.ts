@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import { AdminController } from "./controllers/admin.controller";
+import cors from "cors";
 import { MarketController } from "./controllers/market.controller";
 import cron from "cron";
 import { Job } from "./jobs/job";
@@ -11,34 +11,28 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
-const appLink = process.env.APP_LINK || "https://main--toast-peanutbot.netlify.app";
+const appLink = process.env.APP_LINK || "main--toast-peanutbot.netlify.app";
 
 app.use(express.json());
 
 // CORS Configuration
 const corsOptions = {
-  origin: [appLink, 'https://main--toast-peanutbot.netlify.app'],
+  origin: [appLink, 'https://toast-peanutbot.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials: true, // Allow credentials
   optionsSuccessStatus: 204 // For legacy browser support
 };
 
 app.use(cors(corsOptions));
 
 // Handle Preflight Requests
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', appLink);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(204);
-});
+app.options('*', cors(corsOptions));
 
 const cronExpression = "*/15 * * * * *";
 
 const cronJob = new cron.CronJob(cronExpression, Job.placeOrder);
-// cronJob.start();
+//cronJob.start();
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
