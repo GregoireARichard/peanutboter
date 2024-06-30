@@ -17,17 +17,17 @@ app.use(express.json());
 
 // CORS Configuration
 const corsOptions = {
-  origin: [appLink, 'https://toast-peanutbot.netlify.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: [appLink, "https://toast-peanutbot.netlify.app"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Allow credentials
-  optionsSuccessStatus: 204 // For legacy browser support
+  optionsSuccessStatus: 204, // For legacy browser support
 };
 
 app.use(cors(corsOptions));
 
 // Handle Preflight Requests
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 const cronExpression = "*/15 * * * * *";
 
@@ -39,11 +39,14 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Apply CORS headers to specific routes if needed
-app.post("/admin/login", (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', appLink);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+app.post("/admin/:id/login", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", appLink);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS",
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   AdminController.login(req, res);
 });
 
