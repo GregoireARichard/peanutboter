@@ -6,8 +6,8 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       host: '127.0.0.1',
       database: 'peanutbot',
-      user: 'mainAdmin',
-      password: 'root'
+      user: process.env.POSTGRES_USER || 'mainAdmin',
+      password: process.env.POSTGRES_PASSWORD || 'root'
     },
     migrations: {
       directory: './migrations',
