@@ -70,4 +70,26 @@ export class AccountController {
       res.status(401).json({ message: "Token expired" });
     }
   }
+  public static async getAccountBreakdown(
+    req: express.Request,
+    res: express.Response,
+  ) {
+    const accountID = req.params.accountID;
+    if (!accountID) {
+      res.status(401).json({ message: "invalid arguments" });
+    }
+    const result = await AccountService.getAccountBreakdown(accountID);
+    
+    const json = JSON.parse(result as unknown as string)
+    res.send(json);
+  }
+  public static async listAccounts(
+    req: express.Request,
+    res: express.Response,
+  ) {
+    const result = await AccountService.listAccounts();
+
+    const json = JSON.parse(result as unknown as string)
+    res.send(json);
+  }
 }
